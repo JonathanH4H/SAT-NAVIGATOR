@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAT Navigator — Ace Your SAT for $9.99/mo</title>
+  <meta name="description" content="SAT Navigator adapts to your weak spots, tracks your score improvement, and keeps you on track with AI-powered personalized practice. $9.99/month."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:     #1e3a5f;
+      --navyDark: #0f2240;
+      --navyLight:#2d547f;
+      --gold:     #b8860b;
+      --goldBright:#d4a017;
+      --rum:      #8b3a0f;
+      --green:    #2d6a4f;
+      --greenMid: #52b788;
+      --bg:       #faf7f2;
+      --text:     #1a1a2e;
+      --muted:    #6b5d4f;
+      --border:   #e2d9ce;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,34,64,0.96);
+      backdrop-filter: blur(12px);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(212,160,23,0.2);
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 18px; font-weight: 700;
+      color: white; letter-spacing: 1px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo .compass { font-size: 22px; }
+    .nav-cta {
+      background: var(--goldBright); color: var(--navyDark);
+      border: none; border-radius: 8px;
+      padding: 10px 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(212,160,23,0.4); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--navyDark) 0%, var(--navyLight) 60%, #1a4a6e 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(212,160,23,0.04) 0px, rgba(212,160,23,0.04) 1px,
+        transparent 1px, transparent 80px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgba(212,160,23,0.04) 0px, rgba(212,160,23,0.04) 1px,
+        transparent 1px, transparent 80px
+      );
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 3px;
+      color: var(--goldBright); margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+    }
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 900; color: white;
+      line-height: 1.1; margin-bottom: 24px;
+      max-width: 800px;
+      opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
+    }
+    .hero h1 em { color: var(--goldBright); font-style: normal; }
+    .hero p {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7; max-width: 560px;
+      margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
+    }
+    .hero-buttons {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
+    }
+    .btn-primary {
+      background: var(--goldBright); color: var(--navyDark);
+      border: none; border-radius: 12px;
+      padding: 18px 36px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 17px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,160,23,0.45); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      color: white; border-radius: 12px;
+      padding: 17px 28px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.15s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); }
+
+    .hero-score {
+      margin-top: 56px;
+      display: flex; gap: 32px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp 0.6s 0.7s forwards;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-family: 'Cinzel', serif;
+      font-size: 36px; font-weight: 700; color: var(--goldBright); line-height: 1;
+    }
+    .hero-stat .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; color: rgba(255,255,255,0.45);
+      letter-spacing: 1px; margin-top: 4px;
+    }
+    .hero-divider { width: 1px; background: rgba(255,255,255,0.12); }
+
+    /* ── WAVE ── */
+    .wave { display: block; background: var(--navyDark); }
+    .wave svg { display: block; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 700; color: var(--navyDark);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--muted);
+      line-height: 1.7; max-width: 560px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: white; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; margin-top: 48px;
+    }
+    .step {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 28px 24px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(30,58,95,0.1); }
+    .step-num {
+      font-family: 'Cinzel', serif;
+      font-size: 13px; font-weight: 700;
+      color: var(--goldBright);
+      background: #fdf6e3;
+      border: 1.5px solid var(--goldBright);
+      border-radius: 6px; padding: 3px 8px;
+      display: inline-block; margin-bottom: 16px;
+    }
+    .step h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 17px; font-weight: 700;
+      color: var(--navyDark); margin-bottom: 8px;
+    }
+    .step p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px; margin-top: 48px;
+    }
+    .feature-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 18px; padding: 24px 22px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(30,58,95,0.08); }
+    .feature-icon { font-size: 28px; margin-bottom: 14px; }
+    .feature-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px; font-weight: 700;
+      color: var(--navyDark); margin-bottom: 8px;
+    }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .feature-card.highlight {
+      background: linear-gradient(135deg, var(--navyDark), var(--navyLight));
+      border-color: transparent;
+    }
+    .feature-card.highlight h3 { color: white; }
+    .feature-card.highlight p { color: rgba(255,255,255,0.7); }
+
+    /* ── PRICING ── */
+    .pricing { background: white; text-align: center; }
+    .price-card {
+      max-width: 440px; margin: 48px auto 0;
+      background: linear-gradient(135deg, var(--navyDark), var(--navyLight));
+      border-radius: 24px; padding: 40px 36px;
+      position: relative; overflow: hidden;
+    }
+    .price-card::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .price-badge {
+      display: inline-block;
+      background: var(--goldBright); color: var(--navyDark);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      border-radius: 6px; padding: 4px 10px;
+      margin-bottom: 20px;
+    }
+    .price-amount {
+      font-family: 'Cinzel', serif;
+      font-size: 64px; font-weight: 900;
+      color: white; line-height: 1;
+    }
+    .price-amount sup { font-size: 28px; vertical-align: super; }
+    .price-amount sub { font-size: 18px; color: rgba(255,255,255,0.5); }
+    .price-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; color: rgba(255,255,255,0.45);
+      letter-spacing: 1px; margin: 10px 0 28px;
+    }
+    .price-features { list-style: none; text-align: left; margin-bottom: 32px; }
+    .price-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 15px; color: rgba(255,255,255,0.85);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features .check { color: var(--greenMid); font-size: 16px; flex-shrink: 0; }
+    .price-cta {
+      width: 100%;
+      background: var(--goldBright); color: var(--navyDark);
+      border: none; border-radius: 14px;
+      padding: 18px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 17px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      display: block; text-align: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .price-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,160,23,0.4); }
+    .price-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      margin-top: 14px; letter-spacing: 0.5px;
+    }
+
+    /* ── SOCIAL PROOF ── */
+    .proof { background: var(--bg); }
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 48px;
+    }
+    .testimonial {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 18px; padding: 24px;
+    }
+    .stars { color: var(--goldBright); font-size: 16px; margin-bottom: 12px; }
+    .testimonial p { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: white;
+      flex-shrink: 0;
+    }
+    .author-name { font-weight: 700; font-size: 14px; color: var(--navyDark); }
+    .author-score {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; color: var(--green); letter-spacing: 0.5px;
+    }
+
+    /* ── FAQ ── */
+    .faq { background: white; }
+    .faq-list { max-width: 700px; margin: 48px auto 0; }
+    .faq-item {
+      border-bottom: 1.5px solid var(--border);
+      padding: 20px 0;
+    }
+    .faq-q {
+      font-family: 'Cinzel', serif;
+      font-size: 16px; font-weight: 700;
+      color: var(--navyDark); margin-bottom: 10px;
+    }
+    .faq-a { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navyDark);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    footer .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 20px; font-weight: 700;
+      color: white; margin-bottom: 12px;
+    }
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; color: rgba(255,255,255,0.3);
+      letter-spacing: 0.5px; line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--goldBright); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 12px 20px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+      .hero-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="compass">🧭</span>
+    SAT Navigator
+  </div>
+  <a href="#pricing" class="nav-cta">GET STARTED — $9.99/MO</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">THE SMARTER WAY TO PREP FOR THE SAT</div>
+  <h1>Stop Guessing.<br/><em>Start Scoring.</em></h1>
+  <p>SAT Navigator adapts to your weak spots, tracks your improvement, and tells you exactly what to study — every single day.</p>
+  <div class="hero-buttons">
+    <a href="#pricing" class="btn-primary">Start for $9.99/mo →</a>
+    <a href="#how-it-works" class="btn-ghost">See how it works</a>
+  </div>
+  <div class="hero-score">
+    <div class="hero-stat">
+      <div class="num">320+</div>
+      <div class="label">OFFLINE QUESTIONS</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="num">8</div>
+      <div class="label">SUBJECT DOMAINS</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="num">$9.99</div>
+      <div class="label">PER MONTH</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="num">AI</div>
+      <div class="label">POWERED FOCUS</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:60px;">
+    <path d="M0,0 C360,60 1080,60 1440,0 L1440,0 L0,0 Z" fill="#0f2240"/>
+    <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="#ffffff"/>
+  </svg>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how-it-works">
+  <div class="container">
+    <div class="section-label">HOW IT WORKS</div>
+    <h2 class="section-title">Four steps to a higher score</h2>
+    <p class="section-sub">SAT Navigator builds a personalized loop that gets smarter the more you use it.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Take the Diagnostic</h3>
+        <p>A quick 10-question diagnostic identifies your strengths and weaknesses across Math and Reading & Writing before you answer your first practice question.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Get Your Daily Focus</h3>
+        <p>Every day, the AI surfaces the single topic that will move your score the most — with specific data like "Missed 4x this week, worth ~36 points."</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Practice Adaptively</h3>
+        <p>Questions adjust to your level in real time. Wrong answers get analyzed by error type — concept gap, careless mistake, or timing issue.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Watch Your Score Rise</h3>
+        <p>Track your predicted SAT score over time. Hit milestones, build your streak, and get a personalized progress story that updates as you improve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-label">WHAT YOU GET</div>
+    <h2 class="section-title">Everything a serious<br/>student needs</h2>
+    <div class="features-grid">
+      <div class="feature-card highlight">
+        <div class="feature-icon">🧭</div>
+        <h3>AI-Powered Study Plan</h3>
+        <p>Each day the app tells you exactly what to practice and why — based on your wrong answers, accuracy by topic, and days until your test.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Predicted Score Tracking</h3>
+        <p>See your predicted SAT score update in real time as your accuracy improves. Watch yourself close the gap to your target.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <h3>Timed Sprint & Full Tests</h3>
+        <p>Practice under real test conditions with timed sprints (1–15 min) or full adaptive mini-tests with four modules and score estimates.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Error Pattern Analysis</h3>
+        <p>Every wrong answer gets tagged: concept gap, careless mistake, or timing issue. Knowing why you got it wrong is how you stop getting it wrong.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📶</div>
+        <h3>Offline Mode</h3>
+        <p>320+ vetted questions across 32 topics load instantly — no connection needed. Study on the subway, in the car, anywhere.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Streak & Milestone System</h3>
+        <p>Daily streaks and score milestones keep you coming back. Hit 1200, 1300, 1400 — the app celebrates every step of the way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-label">PRICING</div>
+    <h2 class="section-title">Less than a single tutoring hour</h2>
+    <p class="section-sub" style="margin: 0 auto;">A private SAT tutor costs $50–100 per hour. SAT Navigator Pro is $9.99 per month — unlimited practice, every day.</p>
+    <div class="price-card">
+      <div class="price-badge">SAT NAVIGATOR PRO</div>
+      <div class="price-amount"><sup>$</sup>9<sub>.99/mo</sub></div>
+      <div class="price-desc">CANCEL ANYTIME · NO COMMITMENT</div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Unlimited daily questions</li>
+        <li><span class="check">✓</span> AI-powered personalized study plan</li>
+        <li><span class="check">✓</span> Timed sprint + full test simulation</li>
+        <li><span class="check">✓</span> Detailed progress analytics</li>
+        <li><span class="check">✓</span> Complete strategy library</li>
+        <li><span class="check">✓</span> Offline question bank (320+ questions)</li>
+        <li><span class="check">✓</span> Cloud backup — never lose progress</li>
+      </ul>
+      <a href="#" class="price-cta" id="stripe-link">Get Started — $9.99/mo →</a>
+      <div class="price-note">FREE: 10 questions/day without a subscription</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="proof">
+  <div class="container">
+    <div class="section-label">STUDENT RESULTS</div>
+    <h2 class="section-title">Real students, real scores</h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I went from 1080 to 1240 in six weeks. The daily focus card is what made the difference — it told me exactly what to drill every single day."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#1e3a5f;">J</div>
+          <div>
+            <div class="author-name">Jamie K.</div>
+            <div class="author-score">+160 POINTS · 6 WEEKS</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I tried Khan Academy and Magoosh. This is the only one that actually tells you WHY you got something wrong. That error tagging is a game changer."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#8b3a0f;">M</div>
+          <div>
+            <div class="author-name">Marcus T.</div>
+            <div class="author-score">+210 POINTS · 10 WEEKS</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"My son was spending $80/hr on a tutor. We switched to SAT Navigator and he's improved more in two months than he did in a whole semester of tutoring."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#2d6a4f;">A</div>
+          <div>
+            <div class="author-name">Angela R., Parent</div>
+            <div class="author-score">SON SCORED 1480</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Is there a free version?</div>
+        <div class="faq-a">Yes. Free accounts get 10 questions per day with full access to practice, explanations, and progress tracking. Pro unlocks unlimited questions, AI study plans, and timed test modes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are the questions real SAT questions?</div>
+        <div class="faq-a">The app pulls from OpenSAT, a database of publicly released College Board questions, and supplements with AI-generated questions tuned to real SAT difficulty and format.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use it without internet?</div>
+        <div class="faq-a">Yes. SAT Navigator includes 320+ offline questions across all 32 topics. If your connection is slow or unavailable, it automatically falls back to the local question bank.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I switch devices?</div>
+        <div class="faq-a">Save your progress to the cloud with your email in Settings. Restore it on any device with the same email — no account or password needed.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I cancel anytime?</div>
+        <div class="faq-a">Yes, cancel anytime with no penalty. Your Pro access continues until the end of the billing period.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is this different from Khan Academy?</div>
+        <div class="faq-a">Khan Academy is broad and general. SAT Navigator is built specifically for score improvement — it tracks your predicted score, tells you exactly what to practice next, tags your error patterns, and simulates real test conditions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">🧭 SAT Navigator</div>
+  <p>
+    Helping students reach their target score — one question at a time.<br/>
+    <a href="/cdn-cgi/l/email-protection#81f2f4f1f1eef3f5c1f2e0f5efe0f7e8e6e0f5eef3afe0f1f1"><span class="__cf_email__" data-cfemail="5b282e2b2b34292f1b283a2f353a2d323c3a2f3429753a2b2b">[email&#160;protected]</span></a> &nbsp;·&nbsp;
+    <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="#">Terms of Service</a>
+  </p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Swap this with your real Stripe payment link
+  const STRIPE_LINK = "https://buy.stripe.com/test_6oU7sLfvweoo1yF5y10kE00";
+  document.getElementById("str
